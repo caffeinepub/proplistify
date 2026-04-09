@@ -1,0 +1,134 @@
+// Version: 1.0.0
+type ArticleId__678690314 = Text;
+type Article__249909230 =
+  {
+    author : Text;
+    content : Text;
+    featuredImage : ExternalBlob__246066408;
+    id : ArticleId__678690314;
+    isPublished : Bool;
+    metaDescription : Text;
+    publishedAt : Timestamp__301639476;
+    slug : Slug__239290498;
+    title : Text;
+    updatedAt : Timestamp__301639476
+  };
+type Data__791452850<K, V> =
+  {var count : Nat__490723111; kvs : [var ?(K, V)]};
+type ExternalBlob__246066408 = Blob;
+type InquiryType__612476656 =
+  {#general; #information; #offer; #viewingRequest};
+type Internal__8484328<K, V> =
+  {children : [var ?Node__46230540<K, V>]; data : Data__791452850<K, V>};
+type LeadId__1073473045 = Text;
+type Lead__1017602925 =
+  {
+    createdAt : Timestamp__301639476;
+    email : Text;
+    id : LeadId__1073473045;
+    inquiryType : InquiryType__612476656;
+    isRead : Bool;
+    message : Text;
+    name : Text;
+    phone : Text;
+    propertyId : ?PropertyId__421252593;
+    propertyTitle : ?Text
+  };
+type Leaf__809889148<K, V> = {data : Data__791452850<K, V>};
+type Map__158565046<K, V> = Map__297112838<K, V>;
+type Map__297112838<K, V> =
+  {var root : Node__46230540<K, V>; var size : Nat__490723111};
+type Map__605269027<K, V> = Map__158565046<K, V>;
+type Nat__490723111 = Nat__920180692;
+type Nat__920180692 = Nat;
+type Node__46230540<K, V> =
+  {#internal : Internal__8484328<K, V>; #leaf : Leaf__809889148<K, V>};
+type PropertyId__421252593 = Text;
+type PropertyStatus__714027913 = {#active; #inactive; #pending; #sold};
+type PropertyType__673523169 =
+  {#newProject; #plotLand; #rental; #resale; #sale};
+type Property__612470078 =
+  {
+    address : Text;
+    amenities : [Text];
+    areaSqft : Float;
+    bathrooms : Nat;
+    bedrooms : Nat;
+    city : Text;
+    createdAt : Timestamp__301639476;
+    description : Text;
+    floorplans : [ExternalBlob__246066408];
+    galleryImages : [ExternalBlob__246066408];
+    heroImage : ExternalBlob__246066408;
+    id : PropertyId__421252593;
+    isFeatured : Bool;
+    overview : Text;
+    price : Float;
+    propertyType : PropertyType__673523169;
+    slug : Slug__239290498;
+    status : PropertyStatus__714027913;
+    title : Text;
+    updatedAt : Timestamp__301639476
+  };
+type ReviewId__496285678 = Text;
+type Review__1059295586 =
+  {
+    comment : Text;
+    createdAt : Timestamp__301639476;
+    email : Text;
+    id : ReviewId__496285678;
+    isApproved : Bool;
+    name : Text;
+    propertyId : PropertyId__421252593;
+    rating : Nat
+  };
+type Slug__239290498 = Text;
+type Timestamp__301639476 = Int;
+type UserRole__1054455867 = {#admin; #guest; #user};
+actor {
+  stable accessControlState :
+    {
+      var adminAssigned : Bool;
+      userRoles : Map__605269027<Principal, UserRole__1054455867>
+    };
+  stable articleCounter : {var value : Nat};
+  stable var articleCounterValue : Nat;
+  stable articleSlugIndex :
+    {
+      var root : Node__46230540<Slug__239290498, ArticleId__678690314>;
+      var size : Nat__490723111
+    };
+  stable articles :
+    {
+      var root : Node__46230540<ArticleId__678690314, Article__249909230>;
+      var size : Nat__490723111
+    };
+  stable leadCounter : {var value : Nat};
+  stable var leadCounterValue : Nat;
+  stable leads :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?Lead__1017602925]];
+      var elementIndex : Nat__490723111
+    };
+  stable properties :
+    {
+      var root : Node__46230540<PropertyId__421252593, Property__612470078>;
+      var size : Nat__490723111
+    };
+  stable propertyCounter : {var value : Nat};
+  stable var propertyCounterValue : Nat;
+  stable propertySlugIndex :
+    {
+      var root : Node__46230540<Slug__239290498, PropertyId__421252593>;
+      var size : Nat__490723111
+    };
+  stable reviewCounter : {var value : Nat};
+  stable var reviewCounterValue : Nat;
+  stable reviews :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?Review__1059295586]];
+      var elementIndex : Nat__490723111
+    }
+};

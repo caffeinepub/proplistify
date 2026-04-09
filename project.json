@@ -1,0 +1,27 @@
+{
+  "overview": "A fully functional real estate listing platform with SEO-optimized property pages, blog articles, lead capture forms, and a protected admin panel. Features property CRUD (rental, sale, resale, new project, plots/land) with gallery images, amenities, floorplans, and structured data markup for maximum search engine visibility.",
+  "features": [
+    "Property listings (rental, sale, resale, new project, plots & land) with hero image, gallery, amenities, floorplans",
+    "SEO-optimized property detail pages with JSON-LD schema, meta tags, and canonical URLs",
+    "Blog/article management with slug-based URLs, featured images, and SEO meta tags",
+    "Lead capture forms on property pages and a standalone contact page",
+    "Admin panel (protected) for managing properties, articles, leads, and reviews",
+    "Property ratings and reviews with star display",
+    "Mobile-first responsive design with touch-friendly UI and swipeable galleries",
+    "Filters and search by property type, price range, beds/baths on listing page",
+    "Featured properties carousel and blog preview on homepage",
+    "XML sitemap and robots.txt for SEO crawlability"
+  ],
+  "category": "real-estate",
+  "tags": [
+    "real-estate",
+    "property-listings",
+    "seo",
+    "lead-capture",
+    "admin-panel",
+    "mobile-first",
+    "blog",
+    "responsive"
+  ],
+  "last_updated": "2026-04-09T10:57:39.270Z"
+}

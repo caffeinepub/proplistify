@@ -1,0 +1,220 @@
+type _ImmutableObjectStorageRefillResult = 
+ record {
+   success: opt bool;
+   topped_up_amount: opt nat;
+ };
+type _ImmutableObjectStorageRefillInformation = record {
+                                                  proposed_top_up_amount:
+                                                   opt nat;};
+type _ImmutableObjectStorageCreateCertificateResult = 
+ record {
+   blob_hash: text;
+   method: text;
+ };
+type UserRole = 
+ variant {
+   admin;
+   guest;
+   user;
+ };
+type Timestamp = int;
+type Slug = text;
+type ReviewInput = 
+ record {
+   comment: text;
+   email: text;
+   name: text;
+   propertyId: PropertyId;
+   rating: nat;
+ };
+type ReviewId = text;
+type Review = 
+ record {
+   comment: text;
+   createdAt: Timestamp;
+   email: text;
+   id: ReviewId;
+   isApproved: bool;
+   name: text;
+   propertyId: PropertyId;
+   rating: nat;
+ };
+type PropertyType = 
+ variant {
+   newProject;
+   plotLand;
+   rental;
+   resale;
+   sale;
+ };
+type PropertyStatus = 
+ variant {
+   active;
+   inactive;
+   pending;
+   sold;
+ };
+type PropertyPage = 
+ record {
+   items: vec Property;
+   limit: nat;
+   offset: nat;
+   total: nat;
+ };
+type PropertyInput = 
+ record {
+   address: text;
+   amenities: vec text;
+   areaSqft: float64;
+   bathrooms: nat;
+   bedrooms: nat;
+   city: text;
+   description: text;
+   floorplans: vec ExternalBlob;
+   galleryImages: vec ExternalBlob;
+   heroImage: ExternalBlob;
+   isFeatured: bool;
+   overview: text;
+   price: float64;
+   propertyType: PropertyType;
+   slug: Slug;
+   status: PropertyStatus;
+   title: text;
+ };
+type PropertyId = text;
+type PropertyFilters = 
+ record {
+   limit: nat;
+   minBedrooms: opt nat;
+   offset: nat;
+   priceMax: opt float64;
+   priceMin: opt float64;
+   propertyType: opt PropertyType;
+   searchTerm: opt text;
+ };
+type Property = 
+ record {
+   address: text;
+   amenities: vec text;
+   areaSqft: float64;
+   bathrooms: nat;
+   bedrooms: nat;
+   city: text;
+   createdAt: Timestamp;
+   description: text;
+   floorplans: vec ExternalBlob;
+   galleryImages: vec ExternalBlob;
+   heroImage: ExternalBlob;
+   id: PropertyId;
+   isFeatured: bool;
+   overview: text;
+   price: float64;
+   propertyType: PropertyType;
+   slug: Slug;
+   status: PropertyStatus;
+   title: text;
+   updatedAt: Timestamp;
+ };
+type LeadInput = 
+ record {
+   email: text;
+   inquiryType: InquiryType;
+   message: text;
+   name: text;
+   phone: text;
+   propertyId: opt PropertyId;
+   propertyTitle: opt text;
+ };
+type LeadId = text;
+type Lead = 
+ record {
+   createdAt: Timestamp;
+   email: text;
+   id: LeadId;
+   inquiryType: InquiryType;
+   isRead: bool;
+   message: text;
+   name: text;
+   phone: text;
+   propertyId: opt PropertyId;
+   propertyTitle: opt text;
+ };
+type InquiryType = 
+ variant {
+   general;
+   information;
+   offer;
+   viewingRequest;
+ };
+type ExternalBlob = blob;
+type ArticlePage = 
+ record {
+   items: vec Article;
+   limit: nat;
+   offset: nat;
+   total: nat;
+ };
+type ArticleInput = 
+ record {
+   author: text;
+   content: text;
+   featuredImage: ExternalBlob;
+   isPublished: bool;
+   metaDescription: text;
+   slug: Slug;
+   title: text;
+ };
+type ArticleId = text;
+type Article = 
+ record {
+   author: text;
+   content: text;
+   featuredImage: ExternalBlob;
+   id: ArticleId;
+   isPublished: bool;
+   metaDescription: text;
+   publishedAt: Timestamp;
+   slug: Slug;
+   title: text;
+   updatedAt: Timestamp;
+ };
+service : {
+  _immutableObjectStorageBlobsAreLive: (hashes: vec blob) -> (vec bool) query;
+  _immutableObjectStorageBlobsToDelete: () -> (vec blob) query;
+  _immutableObjectStorageConfirmBlobDeletion: (blobs: vec blob) -> ();
+  _immutableObjectStorageCreateCertificate: (blobHash: text) ->
+   (_ImmutableObjectStorageCreateCertificateResult);
+  _immutableObjectStorageRefillCashier: (refillInformation:
+   opt _ImmutableObjectStorageRefillInformation) ->
+   (_ImmutableObjectStorageRefillResult);
+  _immutableObjectStorageUpdateGatewayPrincipals: () -> ();
+  _initializeAccessControl: () -> ();
+  approveReview: (id: ReviewId) -> (bool);
+  assignCallerUserRole: (user: principal, role: UserRole) -> ();
+  createArticle: (input: ArticleInput) -> (Article);
+  createProperty: (input: PropertyInput) -> (Property);
+  deleteArticle: (id: ArticleId) -> (bool);
+  deleteLead: (id: LeadId) -> (bool);
+  deleteProperty: (id: PropertyId) -> (bool);
+  deleteReview: (id: ReviewId) -> (bool);
+  getArticle: (id: ArticleId) -> (opt Article) query;
+  getArticleBySlug: (slug: Slug) -> (opt Article) query;
+  getCallerUserRole: () -> (UserRole) query;
+  getFeaturedProperties: () -> (vec Property) query;
+  getProperty: (id: PropertyId) -> (opt Property) query;
+  getPropertyAverageRating: (propertyId: PropertyId) -> (float64) query;
+  getPropertyBySlug: (slug: Slug) -> (opt Property) query;
+  getRecentArticles: (count: nat) -> (vec Article) query;
+  isCallerAdmin: () -> (bool) query;
+  listAllReviews: () -> (vec Review);
+  listArticles: (offset: nat, limit: nat) -> (ArticlePage) query;
+  listLeads: () -> (vec Lead);
+  listProperties: (filters: PropertyFilters) -> (PropertyPage) query;
+  listReviewsByProperty: (propertyId: PropertyId) -> (vec Review) query;
+  markLeadRead: (id: LeadId) -> (bool);
+  submitLead: (input: LeadInput) -> (Lead);
+  submitReview: (input: ReviewInput) -> (Review);
+  toggleFeatured: (id: PropertyId) -> (bool);
+  updateArticle: (id: ArticleId, input: ArticleInput) -> (opt Article);
+  updateProperty: (id: PropertyId, input: PropertyInput) -> (opt Property);
+}
